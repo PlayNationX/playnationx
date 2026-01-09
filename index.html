@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlayNationX | Koduvally | Dark Neon Gaming Lounge</title>
+  <meta name="description" content="PlayNationX - Dark Neon Gaming Lounge in Koduvally. PS5, FC25, COD, GTA. Book on WhatsApp. Find us on Google Maps." />
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #06060a;
+      --panel: rgba(255,255,255,0.06);
+      --panel2: rgba(255,255,255,0.09);
+      --text: rgba(255,255,255,0.90);
+      --muted: rgba(255,255,255,0.68);
+      --neon1: #8a2be2;   /* purple */
+      --neon2: #00f7ff;   /* cyan */
+      --neon3: #00ff6a;   /* green */
+      --danger: #ff2a6d;  /* pink-red */
+      --shadow: 0 18px 60px rgba(0,0,0,0.65);
+      --radius: 18px;
+    }
+
+    *{ box-sizing:border-box; }
+    html, body{ margin:0; padding:0; background: var(--bg); color: var(--text); }
+    body{
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      overflow-x:hidden;
+    }
+
+    /* Ambient neon background */
+    .bg-wrap{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
+      background:
+        radial-gradient(900px 600px at 20% 10%, rgba(138,43,226,0.20), transparent 60%),
+        radial-gradient(900px 600px at 80% 20%, rgba(0,247,255,0.18), transparent 55%),
+        radial-gradient(900px 600px at 55% 85%, rgba(0,255,106,0.14), transparent 55%),
+        linear-gradient(180deg, #05050a 0%, #070711 45%, #05050a 100%);
+      filter:saturate(115%);
+    }
+    .noise{
+      position:fixed; inset:0; z-index:-1; opacity:0.06; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      background-size:220px 220px;
+      mix-blend-mode:overlay;
+    }
+
+    /* Layout */
+    .container{ width:min(1100px, 92vw); margin:0 auto; }
+
+    nav{
+      position:sticky; top:0;
+      backdrop-filter: blur(14px);
+      background: rgba(6,6,10,0.55);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      z-index:50;
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+    }
+    .brand{
+      display:flex; gap:10px; align-items:center;
+      text-decoration:none; color:var(--text);
+    }
+    .logo-dot{
+      width:14px; height:14px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, var(--neon2), var(--neon1));
+      box-shadow: 0 0 18px rgba(0,247,255,0.55), 0 0 24px rgba(138,43,226,0.35);
+    }
+    .brand span{
+      font-family: Orbitron, sans-serif;
+      font-weight:800;
+      letter-spacing: 0.8px;
+    }
+    .nav-links{
+      display:flex; gap:18px; align-items:center;
+      font-size:14px;
+    }
+    .nav-links a{
+      color: var(--muted);
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius: 12px;
+    }
+    .nav-links a:hover{
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+    }
+
+    /* Buttons */
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding:12px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      text-decoration:none;
+      box-shadow: none;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      user-select:none;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.20); }
+    .btn-primary{
+      border: none;
+      background: linear-gradient(135deg, var(--neon1), var(--neon2));
+      color:#061018;
+      font-weight:700;
+      box-shadow: 0 14px 40px rgba(0,247,255,0.18), 0 10px 30px rgba(138,43,226,0.16);
+    }
+    .btn-primary:hover{ transform: translateY(-2px); filter: brightness(1.05); }
+
+    /* Hero */
+    header{ padding: 70px 0 28px; }
+    .hero{
+      display:grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 26px;
+      align-items: stretch;
+    }
+    @media (max-width: 900px){
+      .hero{ grid-template-columns: 1fr; }
+    }
+
+    .hero-card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(520px 220px at 20% 10%, rgba(0,247,255,0.16), transparent 55%),
+                  radial-gradient(520px 220px at 80% 20%, rgba(138,43,226,0.18), transparent 55%),
+                  radial-gradient(520px 220px at 55% 85%, rgba(0,255,106,0.10), transparent 55%);
+      filter: blur(6px);
+      z-index:0;
+    }
+    .hero-card > *{ position:relative; z-index:1; }
+
+    .kicker{
+      display:inline-flex; gap:10px; align-items:center;
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 0.4px;
+      margin-bottom: 10px;
+    }
+    .chip{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+    }
+    h1{
+      font-family: Orbitron, sans-serif;
+      font-size: clamp(34px, 5vw, 54px);
+      margin: 8px 0 10px;
+      line-height: 1.03;
+      letter-spacing: 0.8px;
+    }
+    .subtitle{
+      color: var(--muted);
+      font-size: 15.5px;
+      line-height: 1.65;
+      margin: 0 0 18px;
+      max-width: 62ch;
+    }
+    .hero-actions{
+      display:flex; flex-wrap:wrap; gap:12px;
+      margin-top: 12px;
+    }
+    .stats{
+      display:grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+    @media (max-width: 520px){
+      .stats{ grid-template-columns: 1fr; }
+    }
+    .stat{
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      padding: 14px 14px;
+      text-align:left;
+    }
+    .stat b{
+      display:block;
+      font-family: Orbitron, sans-serif;
+      letter-spacing: 0.6px;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    .stat span{ color: var(--muted); font-size: 12.5px; }
+
+    /* Right panel */
+    .side{
+      display:flex; flex-direction:column; gap:14px;
+    }
+    .panel{
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    .panel h3{
+      margin: 0 0 10px;
+      font-family: Orbitron, sans-serif;
+      letter-spacing: 0.5px;
+      font-size: 16px;
+    }
+    .list{ margin:0; padding-left: 18px; color: var(--muted); line-height:1.7; font-size: 14px; }
+    .tag-row{ display:flex; flex-wrap:wrap; gap:10px; }
+    .tag{
+      padding: 8px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.78);
+      font-size: 13px;
+    }
+    .tag strong{ color:#fff; font-weight:700; }
+
+    /* Sections */
+    section{ padding: 42px 0; }
+    .section-title{
+      display:flex; align-items:flex-end; justify-content:space-between; gap: 16px;
+      margin-bottom: 16px;
+    }
+    .section-title h2{
+      margin:0;
+      font-family: Orbitron, sans-serif;
+      letter-spacing: 0.6px;
+      font-size: 20px;
+    }
+    .section-title p{
+      margin:0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+    .card{
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .card h4{
+      margin:0 0 8px;
+      font-family: Orbitron, sans-serif;
+      font-size: 15px;
+      letter-spacing: 0.4px;
+    }
+    .card p{ margin:0; color: var(--muted); font-size: 14px; line-height: 1.65; }
+
+    /* Pricing */
+    .price{
+      font-family: Orbitron, sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.4px;
+      margin: 8px 0 6px;
+      background: linear-gradient(135deg, var(--neon2), var(--neon1));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .small{ color: var(--muted); font-size: 13px; }
+
+    /* Gallery placeholders */
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 1000px){ .gallery{ grid-template-columns: repeat(2, 1fr);} }
+    .ph{
+      aspect-ratio: 1 / 1;
+      border-radius: 16px;
+      border: 1px dashed rgba(255,255,255,0.18);
+      background:
+        radial-gradient(220px 160px at 30% 25%, rgba(0,247,255,0.14), transparent 60%),
+        radial-gradient(220px 160px at 70% 35%, rgba(138,43,226,0.16), transparent 60%),
+        rgba(255,255,255,0.03);
+      display:flex; align-items:center; justify-content:center;
+      color: rgba(255,255,255,0.70);
+      font-size: 13px;
+      text-align:center;
+      padding: 10px;
+    }
+
+    /* Footer */
+    footer{
+      padding: 26px 0 40px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.60);
+      font-size: 13px;
+    }
+    .footer-row{ display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; align-items:center; }
+    .mono{ font-family: Orbitron, sans-serif; letter-spacing: 0.5px; }
+
+    /* Smooth anchor scroll */
+    html{ scroll-behavior:smooth; }
+  </style>
+</head>
+
+<body>
+  <div class="bg-wrap"></div>
+  <div class="noise"></div>
+
+  <nav>
+    <div class="container">
+      <div class="nav-inner">
+        <a class="brand" href="#top">
+          <div class="logo-dot"></div>
+          <span>PlayNationX</span>
+        </a>
+
+        <div class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#games">Games</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#contact">Contact</a>
+          <a class="btn btn-primary" href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noopener">WhatsApp Booking</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <header id="top">
+    <div class="container">
+      <div class="hero">
+        <div class="hero-card">
+          <div class="kicker">
+            <span class="chip">📍 Koduvally, Kerala</span>
+            <span class="chip">🎮 PS5 • Esports • Chill Zone</span>
+          </div>
+
+          <h1>PlayNationX</h1>
+          <p class="subtitle">
+            A <b>dark-neon</b> next-gen gaming lounge built for competitive matches and relaxed hangouts.
+            Premium ambience, clean setup, and the best console experience in town.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noopener">💬 Book on WhatsApp</a>
+            <a class="btn" href="https://maps.google.com/?q=PlayNationX%20Koduvally" target="_blank" rel="noopener">📍 Open in Maps</a>
+            <a class="btn" href="#pricing">💸 View Pricing</a>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <b>PS5 Setup</b>
+              <span>High-performance console & smooth gameplay</span>
+            </div>
+            <div class="stat">
+              <b>Dark Neon</b>
+              <span>Futuristic vibe • premium lighting</span>
+            </div>
+            <div class="stat">
+              <b>Quick Booking</b>
+              <span>Instant WhatsApp booking + directions</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="side">
+          <div class="panel">
+            <h3>Today’s Highlights</h3>
+            <ul class="list">
+              <li>FC / FIFA tournaments & quick matches</li>
+              <li>Story mode & co-op sessions</li>
+              <li>Comfort seating + clean accessories</li>
+              <li>Perfect for friends & weekend hangouts</li>
+            </ul>
+          </div>
+
+          <div class="panel">
+            <h3>Available</h3>
+            <div class="tag-row">
+              <div class="tag"><strong>PS5</strong> Consoles</div>
+              <div class="tag"><strong>4K</strong> Display</div>
+              <div class="tag"><strong>Pro</strong> Controllers</div>
+              <div class="tag"><strong>Neon</strong> Ambience</div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3>Open Hours</h3>
+            <p class="small" style="margin:0; line-height:1.7;">
+              <b>Mon – Sun:</b> 10:00 AM – 11:00 PM<br>
+              (Edit this time in the code if needed)
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="features">
+    <div class="container">
+      <div class="section-title">
+        <h2>Why PlayNationX?</h2>
+        <p>Premium comfort + serious gaming vibes</p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h4>⚡ Fast, Smooth Gameplay</h4>
+          <p>Optimized console setup for low-lag sessions and stable performance.</p>
+        </div>
+        <div class="card">
+          <h4>🪑 Comfortable Seating</h4>
+          <p>Chill for long sessions without fatigue—perfect for groups.</p>
+        </div>
+        <div class="card">
+          <h4>✨ Dark Neon Ambience</h4>
+          <p>Futuristic lighting and a clean, premium look that feels next-gen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="games">
+    <div class="container">
+      <div class="section-title">
+        <h2>Games & Consoles</h2>
+        <p>Edit this list anytime</p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h4>🎮 Console</h4>
+          <p>PlayStation 5 (PS5)</p>
+        </div>
+        <div class="card">
+          <h4>⚽ Sports</h4>
+          <p>EA Sports FC (FC 25), FIFA (if you have), eFootball</p>
+        </div>
+        <div class="card">
+          <h4>🔫 Action</h4>
+          <p>Call of Duty, GTA V, Fortnite (optional)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="container">
+      <div class="section-title">
+        <h2>Pricing</h2>
+        <p>Replace rates as you like</p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h4>Starter</h4>
+          <div class="price">₹100</div>
+          <p class="small">30 minutes</p>
+        </div>
+
+        <div class="card">
+          <h4>Standard</h4>
+          <div class="price">₹180</div>
+          <p class="small">1 hour</p>
+        </div>
+
+        <div class="card">
+          <h4>Value</h4>
+          <div class="price">₹300</div>
+          <p class="small">2 hours</p>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;">
+        <a class="btn btn-primary" href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noopener">💬 Book Slot Now</a>
+        <a class="btn" href="#contact">📞 Contact</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <div class="container">
+      <div class="section-title">
+        <h2>Gallery</h2>
+        <p>Replace placeholders with your real photos</p>
+      </div>
+
+      <div class="gallery">
+        <div class="ph">Add Photo 1<br>(Setup / Screen)</div>
+        <div class="ph">Add Photo 2<br>(Neon Lights)</div>
+        <div class="ph">Add Photo 3<br>(Controllers)</div>
+        <div class="ph">Add Photo 4<br>(Seating / Lounge)</div>
+      </div>
+
+      <p class="small" style="margin-top:12px;">
+        Tip: Upload images in the same repo and replace placeholders with <b>&lt;img&gt;</b> tags.
+      </p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="section-title">
+        <h2>Contact</h2>
+        <p>Koduvally • Quick WhatsApp booking</p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h4>💬 WhatsApp</h4>
+          <p>
+            <a class="btn btn-primary" href="https://wa.me/917907682154" target="_blank" rel="noopener">
+              Message Now
+            </a>
+          </p>
+          <p class="small">Replace 91XXXXXXXXXX with your number</p>
+        </div>
+
+        <div class="card">
+          <h4>📍 Location</h4>
+          <p>
+            <a class="btn" href="https://maps.google.com/?q=PlayNationX%20Koduvally" target="_blank" rel="noopener">
+              Open in Google Maps
+            </a>
+          </p>
+          <p class="small">You can paste your exact Maps link</p>
+        </div>
+
+        <div class="card">
+          <h4>⏰ Open Hours</h4>
+          <p class="small" style="line-height:1.7;">
+            Mon – Sun: 10:00 AM – 11:00 PM<br>
+            (Edit inside the code)
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-row">
+        <div class="mono">PlayNationX • Koduvally</div>
+        <div>© <span id="year"></span> All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
